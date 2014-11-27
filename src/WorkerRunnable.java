@@ -15,16 +15,13 @@ public class WorkerRunnable implements Runnable {
         try (BufferedReader input = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
              BufferedWriter output = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()))) {
 
-            long time = System.currentTimeMillis();
+            while (true) {
+                int number = Integer.parseInt(input.readLine());
+                //System.out.println(number);
 
-            Integer number;
-            while ((number = Integer.parseInt(input.readLine())) <= 1000) {
                 output.write(String.valueOf(number + 1) + "\n");
                 output.flush();
             }
-
-            long total = System.currentTimeMillis() - time;
-            System.out.println("Requests processed: " + total);
         } catch (IOException e) {
             e.printStackTrace();
         }

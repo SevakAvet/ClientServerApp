@@ -26,15 +26,16 @@ class Client implements Runnable {
 
             Integer x = 0;
             while (true) {
-                System.out.println("id=" + id + ", request: " + x);
+                //System.out.println("id=" + id + ", request: " + x);
                 out.println(x);
                 out.flush();
 
                 x = Integer.parseInt(in.readLine());
-                System.out.println("id=" + id + ", response: " + x);
+                //System.out.println("id=" + id + ", response: " + x);
             }
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
+            System.exit(0);
         }
     }
 }

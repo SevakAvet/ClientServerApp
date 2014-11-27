@@ -33,8 +33,7 @@ public class Server implements Runnable {
                     System.out.println("Server Stopped.");
                     return;
                 }
-                throw new RuntimeException(
-                        "Error accepting client connection", e);
+                throw new RuntimeException("Error accepting client connection", e);
             }
 
             new Thread(new WorkerRunnable(clientSocket, "Multithreaded Server")).start();
