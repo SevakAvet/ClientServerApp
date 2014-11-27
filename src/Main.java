@@ -3,7 +3,7 @@ public class Main {
         Server server = new Server(8080);
         new Thread(server).start();
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 10000; i++) {
             Client client = new Client("localhost", 8080, i + 1);
             new Thread(client).start();
         }

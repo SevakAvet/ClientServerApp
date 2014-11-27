@@ -24,7 +24,7 @@ class Client implements Runnable {
              BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
              PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true)) {
 
-            int x = 0;
+            Integer x = 0;
             while (true) {
                 System.out.println("id=" + id + ", request: " + x);
                 out.println(x);

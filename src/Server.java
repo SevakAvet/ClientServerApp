@@ -1,4 +1,4 @@
-import java.io.*;
+import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -20,46 +20,27 @@ public class Server implements Runnable {
         synchronized (this) {
             this.runningThread = Thread.currentThread();
         }
+
         openServerSocket();
 
         while (!isStopped()) {
             Socket clientSocket;
 
             try {
-                clientSocket = serverSocket.accept();
+                clientSocket = this.serverSocket.accept();
             } catch (IOException e) {
                 if (isStopped()) {
-                    System.out.println("Server stopped.");
+                    System.out.println("Server Stopped.");
                     return;
                 }
+                throw new RuntimeException(
+                        "Error accepting client connection", e);
+            }
 
-                throw new RuntimeException("Error accepting client connection", e);
-            }
-            try {
-                processClientRequest(clientSocket);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            new Thread(new WorkerRunnable(clientSocket, "Multithreaded Server")).start();
         }
 
         System.out.println("Server stopped.");
-    }
-
-    private void processClientRequest(Socket clientSocket) throws IOException {
-        BufferedReader input = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-        BufferedWriter output = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
-        long time = System.currentTimeMillis();
-
-        Integer number;
-        while((number = Integer.parseInt(input.readLine())) <= 1000) {
-            output.write(String.valueOf(number + 1) + "\n");
-            output.flush();
-        }
-
-        output.close();
-        input.close();
-
-        System.out.println("Requests processed: " + time);
     }
 
     private synchronized boolean isStopped() {
